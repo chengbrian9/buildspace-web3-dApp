@@ -6,6 +6,7 @@ import "hardhat/console.sol";
 contract WavePortal {
   //define var
   uint256 totalWaves;
+  uint[] users; 
 
   constructor() {
     console.log("First Ethereum smart contract! :)");
@@ -21,5 +22,14 @@ contract WavePortal {
     console.log("We have %d total waves!", totalWaves);
     return totalWaves;
   }
+  
+//how would you push each addy to an array and console log it?
+  // function push(uint i) public {
+  //   users.push(i);
+  // }
+
+  // function getUsers() public view returns () {
+  //   return users;
+  // }
 
 } 

@@ -18,6 +18,8 @@ const main = async () => {
   //call increment fx
   let waveTxn = await waveContract.wave();
   await waveTxn.wait();
+  // let getUser = await waveContract.push(msg.sender);
+  // await getUsers.wait();
 
   //log total waves + connect new wallet addy + increment 
   waveCount = await waveContract.getTotalWaves();
@@ -26,7 +28,7 @@ const main = async () => {
   
   //log total waves again
   waveCount = await waveContract.getTotalWaves(); 
-  // waveCount = await waveContract.logUsers();
+  // waveCount = await waveContract.getUsers();
 };
 
 const runMain = async () => {
