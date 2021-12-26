@@ -4,31 +4,34 @@ const main = async () => {
   const [owner, randomPerson] = await hre.ethers.getSigners();
   //deploying contracts
   const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
-  const waveContract = await waveContractFactory.deploy();
+  //deploy and fund contract w 0.1 eth
+  const waveContract = await waveContractFactory.deploy({
+    value: hre.ethers.utils.parseEther('0.1'),
+  });
   await waveContract.deployed();
   
   //log after deploy successful
   console.log("Wave contract deployed to: ", waveContract.address);
   console.log("Wave contract deployed by: ", owner.address);
 
-  //declare var, log total waves
-  let waveCount;
-  waveCount = await waveContract.getTotalWaves();
+  //get contract balance
+  let contractBalance = await hre.ethers.provider.getBalance(
+    waveContract.address
+  );
+  console.log('Contract balance:', hre.ethers.utils.formatEther(contractBalance));
 
   //call increment fx
-  let waveTxn = await waveContract.wave();
+  let waveTxn = await waveContract.wave('test msg');
   await waveTxn.wait();
-  // let getUser = await waveContract.push(msg.sender);
-  // await getUsers.wait();
 
-  //log total waves + connect new wallet addy + increment 
-  waveCount = await waveContract.getTotalWaves();
-  waveCount = await waveContract.connect(randomPerson).wave();
-  await waveTxn.wait()
-  
-  //log total waves again
-  waveCount = await waveContract.getTotalWaves(); 
-  // waveCount = await waveContract.getUsers();
+  //see if contract balance decremented
+  contractBalance = await hre.ethers.provider.getBalance(waveContract.address);
+  console.log(
+    'Contract balance:', hre.ethers.utils.formatEther(contractBalance)
+  );
+
+  let allWaves = await waveContract.getAllWaves();
+  console.log(allWaves);
 };
 
 const runMain = async () => {

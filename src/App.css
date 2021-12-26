@@ -32,3 +32,12 @@
   border-radius: 5px;
   
 }
+
+#inputMsg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 600px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
