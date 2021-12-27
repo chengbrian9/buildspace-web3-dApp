@@ -6,7 +6,7 @@ import abi from './utils/wavePortals.json';
 export default function App() {   
   const [currentAccount, setAccount] = useState("")
   const [ allWaves, setAllWaves ] = useState([]);
-  const contractAddress = "0xB2c247B66cEAdd27E02AF06E2a8901C08A6924BB"
+  const contractAddress = "0x434751C0121DAACE59761c99d6F5d9b561dDb795"
   const contractABI = abi.abi
  
  const getAllWaves = async () => {
@@ -17,7 +17,7 @@ export default function App() {
         const signer = provider.getSigner();
         const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        let count = await wavePortalContract.getAllWaves();
+        let allWaves = await wavePortalContract.getAllWaves();
         let wavesCleaned = [];
         waves.forEach(() => {
           wavesCleaned.push({
@@ -47,7 +47,7 @@ export default function App() {
       }
       const accounts = await ethereum.request({method: 'eth_accounts'});
 
-      if (accounts.length === 0) {
+      if (accounts.length > 0) {
         const account = accounts[0]
         console.log('Found an authorized account ', account)
         getAllWaves();
@@ -79,7 +79,7 @@ export default function App() {
     try {
       const {ethereum} = window;
       if (ethereum) {
-        const provider = new ethers.providers.Web3Providers(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
         
@@ -92,7 +92,7 @@ export default function App() {
         count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
       } else {
-        cons
+        console.log('failed')
       }
     } catch (error) {
       console.log(error);

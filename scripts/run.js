@@ -24,6 +24,9 @@ const main = async () => {
   let waveTxn = await waveContract.wave('test msg');
   await waveTxn.wait();
 
+  let waveTxn2 = await waveContract.wave('2nd test msg');
+  await waveTxn.wait();
+
   //see if contract balance decremented
   contractBalance = await hre.ethers.provider.getBalance(waveContract.address);
   console.log(
