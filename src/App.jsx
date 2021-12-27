@@ -13,11 +13,11 @@ export default function App() {
     try {
       const {ethereum} = window;
       if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        let allWaves = await wavePortalContract.getAllWaves();
+        let waves = await wavePortalContract.getAllWaves();
         let wavesCleaned = [];
         waves.forEach((wave) => {
           wavesCleaned.push({
@@ -75,7 +75,7 @@ export default function App() {
   }
 
  
-  const wave = async () => {
+  const wave = async (message) => {
     try {
       const {ethereum} = window;
       if (ethereum) {
@@ -85,14 +85,14 @@ export default function App() {
         
         let count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
-        const waveTxn = await wavePortalContract.wave('test msg');
+        const waveTxn = await wavePortalContract.wave(message, {gasLimit: 300000});
         console.log("Mining...", waveTxn.hash);
 
         await waveTxn.wait();
         count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
       } else {
-        console.log('failed')
+        console.log('Failed')
       }
     } catch (error) {
       console.log(error);
@@ -102,6 +102,18 @@ export default function App() {
    
   useEffect(() => {
     checkIfWalletConnected();
+    let wavePortalContract;
+    const onNewWave = (from, timestamp, message) => {
+      console.log('new wave', from, timestamp, message);
+      setAllWaves(prevState => [
+        ...prevState,
+        {
+          address: from,
+          timestamp: new Date(timestamp * 1000),
+          message: message,
+        },
+      ])
+    }
   }, [])
   
   return (
@@ -113,10 +125,10 @@ export default function App() {
         </div>
 
         <div className="bio">
-        I am brian and I am a defi degen and full stack dev! Connect your Ethereum wallet and wave at me!
+        My name is brian and I'm a defi degen + full stack dev! <br/> Connect your Ethereum wallet and wave at me!
         </div>
         <div id="inputMsg">
-          <input  placeholder="Your wave message here..."></input>
+          <input placeholder="Your wave message here..."></input>
         </div>
         <button className="waveButton" onClick={wave}>
           Wave at Me
@@ -127,13 +139,13 @@ export default function App() {
             Connect Wallet
           </button>
         )}
-
+        <h2>On-chain Transaction History</h2>
         {allWaves.map((wave, index) => {
           return (
-            <div key={index} style ={{ backgrounColor: "OldLace", marginTop: "16px", padding: "8px"}}>
-              <div> Address: {wave.address}</div>
-              <div> Time: {wave.timestamp.toString()}</div>
-              <div> Message: {wave.message}</div>
+            <div key={index} style ={{ backgroundColor: "OldLace", marginTop: "16px", padding: "8px"}}>
+              <div> <b>Address: </b>{wave.address}</div>
+              <div> <b>Time: </b> {wave.timestamp.toString()}</div>
+              <div><b> Message: </b>{wave.message}</div>
             </div>)
         })}
       </div>
