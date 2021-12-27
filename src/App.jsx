@@ -19,7 +19,7 @@ export default function App() {
 
         let allWaves = await wavePortalContract.getAllWaves();
         let wavesCleaned = [];
-        waves.forEach(() => {
+        waves.forEach((wave) => {
           wavesCleaned.push({
             address: wave.waver,
             timestamp: new Date(wave.timestamp * 1000),
