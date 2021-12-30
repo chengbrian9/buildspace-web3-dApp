@@ -1,6 +1,6 @@
 # Waves On-Chain 
 
-Waves On-chain is a Buildspace web3 dApp challenge. Front-end deployed using Replit. You can find the live contract on Rinkeby testnet explorer at https://rinkeby.etherscan.io/address/0x434751C0121DAACE59761c99d6F5d9b561dDb795. 
+Waves On-chain is a web3 dApp deployed on Ethereum that allows you to send/view messages on a decentralized platform. Users will also receive rewards at random! You can find the live contract on Rinkeby testnet explorer at https://rinkeby.etherscan.io/address/0x434751C0121DAACE59761c99d6F5d9b561dDb795. 
 
 User Journey:
 1. Click 'Connect Wallet' and connect your Metamask wallet (select Rinkeby testnet).
